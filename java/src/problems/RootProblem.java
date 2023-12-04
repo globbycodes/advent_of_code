@@ -44,7 +44,7 @@ public class RootProblem {
     }
 
     public void showSolution(Integer partNumber){
-        if(partNumber < 1 || partNumber > 2){
+        if(partNumber < 0 || partNumber > 2){
             TerminalPrint.printAbortMsg();
             return;
         }

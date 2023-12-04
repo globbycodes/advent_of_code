@@ -11,11 +11,11 @@ public class TerminalPrint {
     }
 
     public static void printAllPartsSelecteMsg(){
-        System.out.println("\n\n\n No part number was selected. Printing results for all parts");
+        System.out.println("\n\n\nNo part number was selected. Printing results for all parts");
     }
 
     public static void printIntroMsg(){
-        System.out.println("\n\n\nEnter the problem number, followed by the part number:");
+        System.out.println("\n\n\nEnter the problem number, followed by the part number:\n\n");
     }
 
     public static void printAbortMsg(){

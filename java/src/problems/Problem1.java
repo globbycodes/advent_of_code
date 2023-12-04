@@ -6,9 +6,9 @@ import java.util.*;
 public class Problem1 extends RootProblem{
     
     private int problemNumber = 1;
+    Map<String, Character> digitsMap;
     String[] digits = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-    String[] reversedDigits;
-    Map<Integer, char[]> groupedByLengthKeys;
+    int[] wordSizes = {3, 4, 5};
 
     
     protected void solve(Integer partNumber){
@@ -60,10 +60,84 @@ public class Problem1 extends RootProblem{
     }
 
     private void partTwo(String[] input){
-        
+        setUpData();
+        int sum = 0;
+        for(String curLine: input){
+            
+            char digit1 = '0';
+            char digit2 = '0';
+            String subString;
+
+            for(int i = 0; i < curLine.length(); i++){
+                char curChar = curLine.charAt(i);
+                if(curChar >= '1' && curChar <= '9'){
+                    digit1 = curChar;
+                    break; // found first digit
+                }
+                boolean foundDigit = false;
+                for(int wordSize: wordSizes){
+                    if(i + wordSize >= curLine.length()){
+                        break;
+                    }else{
+                        subString = curLine.substring(i, i + wordSize);
+                        if(digitsMap.containsKey(subString)){
+                            digit1 = digitsMap.get(subString);
+                            foundDigit = true;
+                            break;
+                        }
+                    }
+                }
+                if(foundDigit) break;
+            }
+
+            if(digit1 == '0'){
+                System.out.println("\nNo digit 1 was found, something is off...");
+                return;
+            }
+
+            for(int i = curLine.length() - 1; i >= 0; i--){
+                
+                char curChar = curLine.charAt(i);
+                
+                if(curChar >= '1' && curChar <= '9'){
+                    digit2 = curChar;
+                    break; // found last digit
+                }
+                boolean foundDigit = false;
+                for(int wordSize: wordSizes){
+                    if(i - wordSize < -1){
+                        break;
+                    }else{
+                        subString = curLine.substring(i - wordSize + 1, i + 1);
+                        if(digitsMap.containsKey(subString)){
+                            digit2 = digitsMap.get(subString);
+                            foundDigit = true;
+                            break;
+                        }
+                    }
+                }
+                if(foundDigit) break;
+            }
+            if(digit2 == '0'){
+                System.out.println("\nNo digit 2 was found, something is off...");
+                return;
+            }
+
+            String number = "" + digit1 + digit2;
+
+            sum+= Integer.parseInt(number);
+        }
+        System.out.println("RESULT OF PART TWO: " + sum);
     }
 
-    // private  slidingWindow()
+    private void setUpData(){
+        this.digitsMap = new HashMap<>();
+        for(int i = 0; i < digits.length; i++){
+            int value = i + 1;
+            Character digitValue = (char)(value + '0');
+            digitsMap.put(digits[i], digitValue);
+        }
+    }
 
 
 
