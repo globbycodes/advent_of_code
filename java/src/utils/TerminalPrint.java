@@ -2,12 +2,12 @@ package utils;
 
 public class TerminalPrint {
     public static void printIntroLogo(){
-        System.out.println("              ___      _            _     _____  __   _____           _        _ ");
-        System.out.println("             / _ \\    | |          | |   |  _  |/ _| /  __ \\         | |      | |");
-        System.out.println("            / /_\\ \\ __| | ___ _ __ | |_  | | | | |_  | /  \\/ ___   __| | ___  | |");
-        System.out.println("            |  _  |/ _` |/ _ \\ '_ \\| __| | | | |  _| | |    / _ \\ / _` |/ _ \\ | |");
-        System.out.println("            | | | | (_| |  __/ | | | |_  \\ \\_/ / |   | \\__/\\ (_) | (_| |  __/ |_|");
-        System.out.println("            \\_| |_/\\__,_|\\___|_| |_|\\__|  \\___/|_|    \\____/\\___/ \\__,_|\\___| (_)");
+        System.out.println("          ___      _                 _     _____  __   _____           _        _ ");
+        System.out.println("         / _ \\    | |               | |   |  _  |/ _| /  __ \\         | |      | |");
+        System.out.println("        / /_\\ \\ __| |_   _____ _ __ | |_  | | | | |_  | /  \\/ ___   __| | ___  | |");
+        System.out.println("        |  _  |/ _` \\ \\ / / _ \\ '_ \\| __| | | | |  _| | |    / _ \\ / _` |/ _ \\ | |");
+        System.out.println("        | | | | (_| |\\ V /  __/ | | | |_  \\ \\_/ / |   | \\__/\\ (_) | (_| |  __/ |_|");
+        System.out.println("        \\_| |_/\\__,_| \\_/ \\___|_| |_|\\__|  \\___/|_|    \\____/\\___/ \\__,_|\\___| (_)");
     }
 
     public static void printAllPartsSelecteMsg(){
@@ -29,5 +29,9 @@ public class TerminalPrint {
 
     public static void printWrongProblemInputMsg(){
         System.out.println("Something is off with file input");
+    }
+
+    public static <T> void printAnswerMsg(Integer problemNumber, Integer partNumber, T answer){
+        System.out.println("RESULT OF PROBLEM #" + problemNumber +", PART#" + partNumber + ": " + answer);
     }
 }

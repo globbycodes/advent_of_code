@@ -56,7 +56,7 @@ public class Problem1 extends RootProblem{
                 sum+= Integer.parseInt(digit);
             }
         }
-        System.out.println("RESULT OF PART ONE: " + sum);
+        TerminalPrint.printAnswerMsg(problemNumber, 1, sum);
     }
 
     private void partTwo(String[] input){
@@ -127,7 +127,7 @@ public class Problem1 extends RootProblem{
 
             sum+= Integer.parseInt(number);
         }
-        System.out.println("RESULT OF PART TWO: " + sum);
+        TerminalPrint.printAnswerMsg(problemNumber, 2, sum);
     }
 
     private void setUpData(){
