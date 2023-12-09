@@ -71,7 +71,6 @@ public class Problem2 extends RootProblem{
     }
 
     private void partTwo(String[] input){
-        String[] cubeSets;
         
         int sum = 0;
         Integer digit;
