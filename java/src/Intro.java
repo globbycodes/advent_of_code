@@ -10,58 +10,61 @@ public class Intro {
     }
 
     private static void welcome(Integer counter){
-        // Don't allow more than 5 runs
-        if(counter == 5)
-            return;
-        
+
+
         TerminalPrint.printIntroLogo();
-        TerminalPrint.printIntroMsg();
         
-        BufferedReader terminal = new BufferedReader(new InputStreamReader(System.in)); 
-        
-        String[] terminalInput;
-        try {
-            terminalInput = terminal.readLine().split(",\\s");
-        } catch(Exception e) {
-            e.printStackTrace();
-            TerminalPrint.printAbortMsg();
-            return;
-        }
-        
-        if(terminalInput.length < 1 || terminalInput.length > 2){
-            TerminalPrint.printAbortMsg();
-            return;
-        }
+        while(true){
+            TerminalPrint.printIntroMsg();
+            
+            BufferedReader terminal = new BufferedReader(new InputStreamReader(System.in)); 
+            
+            String[] terminalInput;
+            try {
+                terminalInput = terminal.readLine().split(",\\s");
+            } catch(Exception e) {
+                e.printStackTrace();
+                TerminalPrint.printAbortMsg();
+                return;
+            }
+            
+            if(terminalInput.length < 1 || terminalInput.length > 2){
+                // TerminalPrint.printAbortMsg();
+                return;
+            }
 
-        String problemNumberInput = terminalInput[0];
-        String problemPartInput;
-        
-        if(terminalInput.length == 1){ 
-            TerminalPrint.printAllPartsSelecteMsg();
-            problemPartInput = "0"; // no part # was selected
-        }else{
-            problemPartInput = terminalInput[1];
-        }
+            String problemNumberInput = terminalInput[0];
+            if(problemNumberInput.equals("")){
+                return;
+            }
+            String problemPartInput;
+            
+            if(terminalInput.length == 1){ 
+                TerminalPrint.printAllPartsSelecteMsg();
+                problemPartInput = "0"; // no part # was selected
+            }else{
+                problemPartInput = terminalInput[1];
+            }
 
-        Integer problemNumber = convertToNum(problemNumberInput);
-        Integer problemPart = convertToNum(problemPartInput);
+            Integer problemNumber = convertToNum(problemNumberInput);
+            Integer problemPart = convertToNum(problemPartInput);
 
-        if(problemNumber < 0 || problemPart < 0){
-            TerminalPrint.printAbortMsg();
-            return;
-        }
+            if(problemNumber < 0 || problemPart < 0){
+                TerminalPrint.printAbortMsg();
+                return;
+            }
 
-
-        try {
-            Class<?> problemClass = Class.forName("problems.Problem" + problemNumber);
-            Object problemObject = problemClass.getDeclaredConstructor().newInstance();
-            Method showSolutionMethod = problemObject.getClass().getMethod("showSolution", Integer.class);
-            showSolutionMethod.invoke(problemObject, problemPart);
-            // welcome(counter + 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            TerminalPrint.printWrongClassOrMethodMsg();
-            return;
+            try {
+                Class<?> problemClass = Class.forName("problems.Problem" + problemNumber);
+                Object problemObject = problemClass.getDeclaredConstructor().newInstance();
+                Method showSolutionMethod = problemObject.getClass().getMethod("showSolution", Integer.class);
+                showSolutionMethod.invoke(problemObject, problemPart);
+                // welcome(counter + 1);
+            } catch (Exception e) {
+                e.printStackTrace();
+                TerminalPrint.printWrongClassOrMethodMsg();
+                return;
+            }
         }
     }
 

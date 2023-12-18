@@ -34,4 +34,8 @@ public class TerminalPrint {
     public static <T> void printAnswerMsg(Integer problemNumber, Integer partNumber, T answer){
         System.out.println("RESULT OF PROBLEM #" + problemNumber +", PART#" + partNumber + ": " + answer);
     }
+    
+    public static void somethingIsWrong(){
+        System.out.println("Something is simply wrong :)");
+    }
 }

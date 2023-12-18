@@ -175,10 +175,10 @@ public class Problem3 extends RootProblem{
     private int searchAroundGear(int lineNumber, int gearIndex){
         int sum = 0;
 
-        int num1;
-        int num2;
+        int num1 = -1, num2 = -1;
 
         int numberCount = 0;
+        int[] numbers = new int[] {-1, -1, -1, -1, -1, -1};
         int index;
         
         char symbol;
@@ -193,8 +193,7 @@ public class Problem3 extends RootProblem{
             number = buildNumber(input[lineNumber], index, number, false);
             if(number.length() > 0){
                 numberToConvert = number.toString();
-                System.out.println(numberToConvert + " left");
-                num1 = Integer.parseInt(numberToConvert);
+                numbers[0] = Integer.parseInt(numberToConvert);;
                 number.setLength(0);
                 numberCount++;
             }
@@ -207,23 +206,61 @@ public class Problem3 extends RootProblem{
             number = buildNumber(input[lineNumber], index, number, true);
             if(number.length() > 0){
                 numberToConvert = number.toString();
-                System.out.println(numberToConvert + " right");
                 if(numberCount == 0){
-                    num1 = Integer.parseInt(numberToConvert);
+                    numbers[0] = Integer.parseInt(numberToConvert);
                 }else{
-                    num2 = Integer.parseInt(numberToConvert);
+                    numbers[1] = Integer.parseInt(numberToConvert);;
                 }
                 numberCount++;
             }
         }
 
-        String checkLine;
-        // Check above the gear
+        
+        // Check above and below the gear if possible
+        
+        int[] aboveNumbers = new int[] {-1, -1};
         if(lineNumber > 0){
-            checkLine = input[lineNumber - 1];
-
+            aboveNumbers = checkLine(lineNumber - 1, gearIndex);
+            if(aboveNumbers[0] > 0){
+                numberCount++;
+                numbers[2] = aboveNumbers[0];
+            }
+            if(aboveNumbers[1] > 0){
+                numberCount++;
+                numbers[3] = aboveNumbers[1];
+            }
         }
-        return 0;
+
+        int[] belowNumbers = new int[] {-1, -1};
+        if(lineNumber < input.length - 1){
+            belowNumbers = checkLine(lineNumber + 1, gearIndex);
+            if(belowNumbers[0] > 0){
+                numberCount++;
+                numbers[4] = belowNumbers[0];
+            }
+            if(belowNumbers[1] > 0){
+                numberCount++;
+                numbers[5] = belowNumbers[1];
+            }
+        }
+
+        if(numberCount != 2) return 0;
+
+        for(int curNumber: numbers){
+            if(curNumber >= 0){
+                if(num1 < 0){
+                    num1 = curNumber;
+                }else{
+                    num2 = curNumber;
+                }
+            }
+        }
+
+        if(num1 < 0 || num2 < 0){
+            TerminalPrint.somethingIsWrong();
+        } 
+
+        return num1 * num2;
     }
 
     private int[] checkLine(int lineNumber, int gearIndex){
@@ -232,28 +269,37 @@ public class Problem3 extends RootProblem{
         int startIndex = gearIndex - 1 > 0 ? gearIndex - 1 : gearIndex; // if not at the beginning of the line, go one position to the left
         int endIndex = gearIndex + 1 < width - 1 ? gearIndex + 1 : gearIndex;
         StringBuilder number = new StringBuilder();
-        String numberToConvert;
-
-
-
+        
         for(int i = startIndex; i <= endIndex; i++){
             if(isNumber(curLine.charAt(i))){
                 int curIndex = i;
                 if(curIndex == gearIndex - 1){
                     // duplicated while loops -> extract into separate methods
                     number = buildNumber(curLine, curIndex, number, false);
-                    if(number.length() > 0){
-                        number = number.reverse();
-                    }
                 }else{
-                    if(number.length() > 0 && curIndex == gearIndex){
+                    if(number.length() > 0 && curIndex == gearIndex || number.length() == 0){
+                        // Only one number is above/below the gear symbol
                         number = buildNumber(curLine, curIndex, number, true);
+                        localResult[0] = Integer.parseInt(number.toString());
+                        return localResult;
                     }else if(number.length() > 0){
-                        // Found a second number
+                        // Found a second number above the gear symbol
+                        localResult[0] = Integer.parseInt(number.toString());
+                        number.setLength(0);
+                        number = buildNumber(curLine, curIndex, number, true);
+                        localResult[1] = Integer.parseInt(number.toString());
+                        return localResult;
                     }
                 }
+            }else{
+                continue;
             }
         }
+        
+        if(number.length() > 0){
+            localResult[0] = Integer.parseInt(number.toString());
+        }
+
         return localResult;
     }
     
