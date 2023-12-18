@@ -100,7 +100,32 @@ public class Problem4 extends RootProblem{
     }
 
     private void partTwo(){
-        
+        int[] map = new int[101]; // by quickly looking at the input, the range of numbers is from 0 to 99. Instead of hashmap I can just use an int array
+        int sum = 0;
+        int curScore = 0;
+
+         for(String line: input){
+            resetMap(map);
+            
+            String[] winNumbers = line.substring(indexOfColumn + 1, indexOfBar).trim().split("\\s+");
+            
+            populateMap(map, winNumbers);
+
+            String[] playerNumbers = line.substring(indexOfBar + 1, width).trim().split("\\s+");
+            
+            curScore = 0;
+            for(String playerNumberAsString: playerNumbers){
+                int playerNumber = Integer.parseInt(playerNumberAsString);
+                if(map[playerNumber] > 0){
+                    if(curScore == 0){
+                        curScore = 1;
+                    }else{
+                        curScore = curScore << 1; // multiply by 2
+                    }
+                }
+            }
+            sum += curScore;
+        };
     }
 
 }
