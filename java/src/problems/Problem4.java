@@ -15,6 +15,7 @@ public class Problem4 extends RootProblem{
     int indexOfColumn;
     int indexOfBar;
     int width;
+    int partTwoSum = 0;
 
     protected void solve(Integer partNumber){
         String[] input = readFileLineByLine(problemNumber, 0);
@@ -100,32 +101,45 @@ public class Problem4 extends RootProblem{
     }
 
     private void partTwo(){
-        int[] map = new int[101]; // by quickly looking at the input, the range of numbers is from 0 to 99. Instead of hashmap I can just use an int array
-        int sum = 0;
+        for(int i = 0; i < input.length; i++){
+            partTwoSum++;
+            recursiveFunction(i);
+        }
+    }
+
+    private void recursiveFunction(int lineNumber){
+        
+        if(lineNumber >= input.length){
+            System.out.println("end of input"); 
+            return;
+        }
+
+        int[] map = new int[101];
+        String line = input[lineNumber];
+        
+        String[] winNumbers = line.substring(indexOfColumn + 1, indexOfBar).trim().split("\\s+");
+        
+        populateMap(map, winNumbers);
+
+        String[] playerNumbers = line.substring(indexOfBar + 1, width).trim().split("\\s+");
+        
         int curScore = 0;
 
-         for(String line: input){
-            resetMap(map);
-            
-            String[] winNumbers = line.substring(indexOfColumn + 1, indexOfBar).trim().split("\\s+");
-            
-            populateMap(map, winNumbers);
-
-            String[] playerNumbers = line.substring(indexOfBar + 1, width).trim().split("\\s+");
-            
-            curScore = 0;
-            for(String playerNumberAsString: playerNumbers){
-                int playerNumber = Integer.parseInt(playerNumberAsString);
-                if(map[playerNumber] > 0){
-                    if(curScore == 0){
-                        curScore = 1;
-                    }else{
-                        curScore = curScore << 1; // multiply by 2
-                    }
-                }
+        for(String playerNumberAsString: playerNumbers){
+            int playerNumber = Integer.parseInt(playerNumberAsString);
+            if(map[playerNumber] > 0){
+                curScore++;
             }
-            sum += curScore;
-        };
+        }
+
+        if(curScore == 0)
+            return;
+        
+        partTwoSum += curScore;
+
+        for(int i = 1; i < curScore + 1; i++){
+            recursiveFunction(lineNumber + i);
+        }
     }
 
 }
