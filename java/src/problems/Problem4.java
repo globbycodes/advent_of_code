@@ -101,13 +101,20 @@ public class Problem4 extends RootProblem{
     }
 
     private void partTwo(){
+        Map <Integer, Integer> memoization = new HashMap<>();
         for(int i = 0; i < input.length; i++){
             partTwoSum++;
-            recursiveFunction(i);
+            recursiveFunction(i, memoization);
         }
+        TerminalPrint.printAnswerMsg(problemNumber, 2, partTwoSum);
     }
 
-    private void recursiveFunction(int lineNumber){
+    private void recursiveFunction(int lineNumber, Map<Integer, Integer> memoization){
+        
+        if(memoization.get(lineNumber) != null){
+            partTwoSum += memoization.get(lineNumber);
+            return;
+        }
         
         if(lineNumber >= input.length){
             System.out.println("end of input"); 
@@ -124,7 +131,6 @@ public class Problem4 extends RootProblem{
         String[] playerNumbers = line.substring(indexOfBar + 1, width).trim().split("\\s+");
         
         int curScore = 0;
-
         for(String playerNumberAsString: playerNumbers){
             int playerNumber = Integer.parseInt(playerNumberAsString);
             if(map[playerNumber] > 0){
@@ -135,11 +141,20 @@ public class Problem4 extends RootProblem{
         if(curScore == 0)
             return;
         
+        
+        int oldPartTwoSum = partTwoSum;
         partTwoSum += curScore;
 
         for(int i = 1; i < curScore + 1; i++){
-            recursiveFunction(lineNumber + i);
+            recursiveFunction(lineNumber + i, memoization);
         }
+
+        int curCardScore = partTwoSum - oldPartTwoSum;
+
+        if(memoization.get(lineNumber) == null){
+            memoization.put(lineNumber, curCardScore);
+        }
+
     }
 
 }
