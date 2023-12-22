@@ -18,6 +18,8 @@ public class Problem5  extends RootProblem{
     List<Long[]> tempToHumid = new ArrayList<>();
     List<Long[]> humidToLoc = new ArrayList<>();
 
+    Long minLocation = Long.MAX_VALUE;
+
     
     protected void solve(Integer partNumber){
         String[] input = readFileLineByLine(problemNumber, 0);
@@ -92,9 +94,7 @@ public class Problem5  extends RootProblem{
             
             if(line == "") continue;
 
-            if(line.length() > 0 && isNumber(line.charAt(0))){
-                System.out.println(line);
-                System.out.println(i);  
+            if(line.length() > 0 && isNumber(line.charAt(0))){ 
                 TerminalPrint.somethingIsWrong();
                 return;
             }
@@ -179,6 +179,29 @@ public class Problem5  extends RootProblem{
     }
 
     private void partTwo(){
+        setUp();
+
+        Long[][] seeds = new Long[this.seeds.length][2];
+
+        for(int i = 0; i < this.seeds.length; i = i + 2){
+            seeds[i][0] = this.seeds[i];
+            seeds[i][1] = this.seeds[i] + this.seeds[i + 1] - 1L;
+        }
+
+        Long seedMin, seedMax, lastMax;
+        for(Long[] seedRange: seeds){
+            seedMin = seedRange[0];
+            seedMax = seedRange[1];
+            lastMax = seedMin;
+            while(lastMax != seedMax){
+                lastMax = processRange(seedMin, seedMax);
+            }
+        }
+    }
+
+    private Long processRange(Long seedMin, Long seedMax){
         
     }
+
+    
 }
