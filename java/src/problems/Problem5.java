@@ -190,21 +190,21 @@ public class Problem5  extends RootProblem{
         setUp();
         sortMaps();
         
-        Long[][] seeds = new Long[this.seeds.length][2];
-
-        for(int i = 0; i < this.seeds.length; i = i + 2){
-            seeds[i][0] = this.seeds[i];
-            seeds[i][1] = this.seeds[i] + this.seeds[i + 1] - 1L;
+        Long[][] seedArray = new Long[this.seeds.length / 2][2];
+        int index = 0;
+        for(int i = 0; i < seedArray.length; i++){
+            seedArray[i][0] = this.seeds[index];
+            seedArray[i][1] = this.seeds[index] + (this.seeds[index + 1] - 1L);
+            index = index + 2;
         }
-
         Long seedMin, seedMax, lastMax;
-        for(Long[] seedRange: seeds){
+        for(Long[] seedRange: seedArray){
             processRange(1, seedRange[0], seedRange[1]);
         }
+        TerminalPrint.printAnswerMsg(problemNumber, 2, minLocation);
     }
 
     private void processRange(int dictIndex, Long min, Long max){
-        System.out.println(dictIndex); 
         List<Long[]> dict = dictMap.get(dictIndex);
         List<Long[]> newRanges = new ArrayList<>();
         List<Long[]> rangesToProcess = new ArrayList<>();
@@ -216,10 +216,9 @@ public class Problem5  extends RootProblem{
         Long[] newRangeToProcess;
 
         while(rangesToProcess.size() > 0){
-            System.out.println(rangesToProcess.size());
-            System.out.println(rangesToProcess.get(0)[0] + " : " + rangesToProcess.get(0)[1]);
             min = rangesToProcess.get(0)[0];
             max = rangesToProcess.get(0)[1];
+            boolean reset = true;
             for(Long[] range: dict){
                 Long minRange = range[2];
                 Long maxRange = range[3];
@@ -228,22 +227,21 @@ public class Problem5  extends RootProblem{
                 if(min >= minRange && min <= maxRange){
                     // this whole block can be compressed, but leaving it as is for now for.
                     if(min.equals(minRange)){
-                        System.out.println("got into the second if case"); 
                         if(max > maxRange){
-                            System.out.println("got into the third if case"); 
                             newRange = new Long[] {minDestRange, maxDestRange};
                             newRanges.add(newRange);
                             newRangeToProcess = new Long[] {maxRange + 1L, max};
                             rangesToProcess.remove(0);
                             rangesToProcess.add(newRangeToProcess);
+                            reset = false;
                         }else{ // max <= maxRange
                             Long newDestMax = minDestRange + (max - min);
                             newRange = new Long[] {minDestRange, newDestMax};
                             newRanges.add(newRange);
                             rangesToProcess.remove(0);
+                            reset = false;
                         }
                     }else{ // min > minRange
-                        System.out.println("got into the another second if case " + maxRange); 
                         if(max > maxRange){
                             Long newDestMin = minDestRange + (min - minRange);
                             newRange = new Long[] {newDestMin, maxDestRange};
@@ -251,28 +249,26 @@ public class Problem5  extends RootProblem{
                             newRangeToProcess = new Long[] {maxRange + 1L, max};
                             rangesToProcess.remove(0);
                             rangesToProcess.add(newRangeToProcess);
+                            reset = false;
                         }else{ // max <= maxRange
                             Long newDestMin = minDestRange + (min - minRange);
-                            Long newDestMax = minDestRange + (max - min);
+                            Long newDestMax = minDestRange + (max - minRange);
                             newRange = new Long[] {newDestMin, newDestMax};
                             rangesToProcess.remove(0);
                             newRanges.add(newRange);
+                            reset = false;
                         }
                     }
                 }
             }
-            if(min > dict.get(dict.size() - 1)[3] || max < dict.get(0)[2]){
+            if(reset){
                 // no range found
                 newRange = new Long[] {min, max};
                 newRanges.add(newRange);
                 rangesToProcess.remove(0);
             }
         }
-
-        if(newRanges.size() == 0){  
-            TerminalPrint.somethingIsWrong();
-            return;
-        }
+        
         // base case
         // update the location number (min) and terminate
         if(dictIndex == 7){
