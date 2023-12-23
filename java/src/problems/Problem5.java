@@ -17,6 +17,7 @@ public class Problem5  extends RootProblem{
     List<Long[]> lightToTemp = new ArrayList<>();
     List<Long[]> tempToHumid = new ArrayList<>();
     List<Long[]> humidToLoc = new ArrayList<>();
+    Map<Integer, List<Long[]>> dictMap = new HashMap<>();
 
     Long minLocation = Long.MAX_VALUE;
 
@@ -25,7 +26,7 @@ public class Problem5  extends RootProblem{
         String[] input = readFileLineByLine(problemNumber, 0);
         this.input = input;
         this.width = input[0].length();
-     
+
         if(input == null || input.length == 0){
             TerminalPrint.printWrongProblemInputMsg();
             return;
@@ -114,6 +115,13 @@ public class Problem5  extends RootProblem{
             else if(line.contains("humidity-to-location"))
                 i = populateMap(7, i);
         }
+        dictMap.put(1, seedToSoil);
+        dictMap.put(2, soilToFert);
+        dictMap.put(3, fertToWater);
+        dictMap.put(4, waterToLight);
+        dictMap.put(5, lightToTemp);
+        dictMap.put(6, tempToHumid);
+        dictMap.put(7, humidToLoc);
     }
 
     private int populateMap(int key, int index){
@@ -180,7 +188,8 @@ public class Problem5  extends RootProblem{
 
     private void partTwo(){
         setUp();
-
+        sortMaps();
+        
         Long[][] seeds = new Long[this.seeds.length][2];
 
         for(int i = 0; i < this.seeds.length; i = i + 2){
@@ -190,18 +199,102 @@ public class Problem5  extends RootProblem{
 
         Long seedMin, seedMax, lastMax;
         for(Long[] seedRange: seeds){
-            seedMin = seedRange[0];
-            seedMax = seedRange[1];
-            lastMax = seedMin;
-            while(lastMax != seedMax){
-                lastMax = processRange(seedMin, seedMax);
-            }
+            processRange(1, seedRange[0], seedRange[1]);
         }
     }
 
-    private Long processRange(Long seedMin, Long seedMax){
+    private void processRange(int dictIndex, Long min, Long max){
+        System.out.println(dictIndex); 
+        List<Long[]> dict = dictMap.get(dictIndex);
+        List<Long[]> newRanges = new ArrayList<>();
+        List<Long[]> rangesToProcess = new ArrayList<>();
+
+        Long[] initialOldRange = new Long[] {min, max};
+        rangesToProcess.add(initialOldRange);
         
+        Long[] newRange;
+        Long[] newRangeToProcess;
+
+        while(rangesToProcess.size() > 0){
+            System.out.println(rangesToProcess.size());
+            System.out.println(rangesToProcess.get(0)[0] + " : " + rangesToProcess.get(0)[1]);
+            min = rangesToProcess.get(0)[0];
+            max = rangesToProcess.get(0)[1];
+            for(Long[] range: dict){
+                Long minRange = range[2];
+                Long maxRange = range[3];
+                Long minDestRange = range[0];
+                Long maxDestRange = range[1];
+                if(min >= minRange && min <= maxRange){
+                    // this whole block can be compressed, but leaving it as is for now for.
+                    if(min.equals(minRange)){
+                        System.out.println("got into the second if case"); 
+                        if(max > maxRange){
+                            System.out.println("got into the third if case"); 
+                            newRange = new Long[] {minDestRange, maxDestRange};
+                            newRanges.add(newRange);
+                            newRangeToProcess = new Long[] {maxRange + 1L, max};
+                            rangesToProcess.remove(0);
+                            rangesToProcess.add(newRangeToProcess);
+                        }else{ // max <= maxRange
+                            Long newDestMax = minDestRange + (max - min);
+                            newRange = new Long[] {minDestRange, newDestMax};
+                            newRanges.add(newRange);
+                            rangesToProcess.remove(0);
+                        }
+                    }else{ // min > minRange
+                        System.out.println("got into the another second if case " + maxRange); 
+                        if(max > maxRange){
+                            Long newDestMin = minDestRange + (min - minRange);
+                            newRange = new Long[] {newDestMin, maxDestRange};
+                            newRanges.add(newRange);
+                            newRangeToProcess = new Long[] {maxRange + 1L, max};
+                            rangesToProcess.remove(0);
+                            rangesToProcess.add(newRangeToProcess);
+                        }else{ // max <= maxRange
+                            Long newDestMin = minDestRange + (min - minRange);
+                            Long newDestMax = minDestRange + (max - min);
+                            newRange = new Long[] {newDestMin, newDestMax};
+                            rangesToProcess.remove(0);
+                            newRanges.add(newRange);
+                        }
+                    }
+                }
+            }
+            if(min > dict.get(dict.size() - 1)[3] || max < dict.get(0)[2]){
+                // no range found
+                newRange = new Long[] {min, max};
+                newRanges.add(newRange);
+                rangesToProcess.remove(0);
+            }
+        }
+
+        if(newRanges.size() == 0){  
+            TerminalPrint.somethingIsWrong();
+            return;
+        }
+        // base case
+        // update the location number (min) and terminate
+        if(dictIndex == 7){
+            newRanges.forEach(range -> {
+                minLocation = Math.min(minLocation, range[0]);
+            });
+            return;
+        }
+
+        newRanges.forEach(range -> {
+            processRange(dictIndex + 1, range[0], range[1]);
+        });
     }
 
-    
+    private void sortMaps(){
+        for(int i = 1; i <= 7; i++){
+            sortSingleMap(i);
+        }
+    }
+
+    private void sortSingleMap(int dictIndex){
+        List<Long[]> toSort = dictMap.get(dictIndex);
+        toSort.sort((o1, o2) -> o1[2].compareTo(o2[2]));
+    }
 }
