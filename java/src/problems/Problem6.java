@@ -11,6 +11,8 @@ public class Problem6 extends RootProblem{
     int[] dists;
     Long time;
     Long dist;
+    Long leftBound;
+    Long rightBound;
 
     protected void solve(Integer partNumber){
         String[] input = readFileLineByLine(problemNumber, 0);
@@ -104,11 +106,49 @@ public class Problem6 extends RootProblem{
         
         
         // I guess I would have to do the binary search anyway hah
+        Long mid = time / 2L;
+        Long left = findBoundary(0L, mid, false, -1L);
+        Long right = findBoundary(mid + 1, time, true, -1L);
 
+        TerminalPrint.printAnswerMsg(problemNumber, 2, right - left + 1);
+    }
+
+    private Long findBoundary(Long left, Long right, boolean dir, Long higherDist){
         
+        if(left <= time && left <= right){
+            Long mid = left + (right - left) / 2; 
+            Long rem = time - mid;
+            Long newDist = mid * rem;
 
+            higherDist = newDist > dist ? mid : higherDist;
+            
+            if(newDist.equals(dist)){
+                if(!dir){
+                    return mid + 1;
+                }else{
+                    return mid - 1;
+                }
+            }else if(left.equals(right)){
+                if(!dir)
+                    return higherDist;
+                else
+                    return higherDist;
+            }
 
-        System.out.println(time);
-        System.out.println(dist);
+            if(newDist > dist){
+                if(!dir){
+                    return findBoundary(left, mid, dir, higherDist);
+                }else{
+                    return findBoundary(mid + 1, right, dir, higherDist);
+                }
+            }else{
+                if(!dir){
+                    return findBoundary(mid + 1, right, dir, higherDist);
+                }else{
+                    return findBoundary(left, mid, dir, higherDist);
+                }
+            }
+        }
+        return -1L;
     }
 }
