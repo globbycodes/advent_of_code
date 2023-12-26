@@ -3,10 +3,12 @@ package problems;
 import utils.TerminalPrint;
 import java.util.*;
 
-public class Problem8  extends RootProblem{
+public class Problem8 extends RootProblem{
     int problemNumber = 8;
     int width;
     String[] input;
+    Map<String, String[]> dirMap = new HashMap<>();
+    char[] dirArray;
 
     protected void solve(Integer partNumber){
         String[] input = readFileLineByLine(problemNumber, 0);
@@ -35,7 +37,13 @@ public class Problem8  extends RootProblem{
     }
 
     private void setUpP1(){
+        dirArray = input[0].toCharArray();
+        String line;
+        for(int i = 2; i < input.length; i++){
+            line = input[i];
+            String[] seedNumbersAsStrings = line.substring(6, line.length()).trim().split("\\s+");
 
+        }
     }
 
     private void partTwo(){
