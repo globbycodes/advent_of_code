@@ -3,8 +3,6 @@ package problems;
 import utils.TerminalPrint;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Problem4 extends RootProblem{
     

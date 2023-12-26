@@ -173,7 +173,6 @@ public class Problem3 extends RootProblem{
     }
 
     private int searchAroundGear(int lineNumber, int gearIndex){
-        int sum = 0;
 
         int num1 = -1, num2 = -1;
 
@@ -181,14 +180,12 @@ public class Problem3 extends RootProblem{
         int[] numbers = new int[] {-1, -1, -1, -1, -1, -1};
         int index;
         
-        char symbol;
         StringBuilder number = new StringBuilder();
         String numberToConvert;
         
         // Check left from the gear
         if(gearIndex > 0){
             index = gearIndex - 1; // one position to the left of the gear
-            symbol = input[lineNumber].charAt(index);
 
             number = buildNumber(input[lineNumber], index, number, false);
             if(number.length() > 0){
@@ -202,7 +199,6 @@ public class Problem3 extends RootProblem{
         // Check right from the gear
         if(gearIndex < width - 1){
             index = gearIndex + 1; // one position to the right of the gear
-            symbol = input[lineNumber].charAt(index);
             number = buildNumber(input[lineNumber], index, number, true);
             if(number.length() > 0){
                 numberToConvert = number.toString();

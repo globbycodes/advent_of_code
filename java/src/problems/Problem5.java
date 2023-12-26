@@ -197,7 +197,6 @@ public class Problem5  extends RootProblem{
             seedArray[i][1] = this.seeds[index] + (this.seeds[index + 1] - 1L);
             index = index + 2;
         }
-        Long seedMin, seedMax, lastMax;
         for(Long[] seedRange: seedArray){
             processRange(1, seedRange[0], seedRange[1]);
         }

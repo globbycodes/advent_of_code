@@ -1,6 +1,5 @@
 package problems;
 
-import java.util.*;
 import utils.TerminalPrint;
 
 public class Problem6 extends RootProblem{
