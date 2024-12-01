@@ -1,4 +1,4 @@
-package problems;
+package year_2023;
 
 import java.util.*;
 import utils.TerminalPrint;

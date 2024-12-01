@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.*;
 import utils.*;
-import problems.*;
 
 public class Intro {
     public static void main(String[] args) throws Exception {
@@ -55,7 +54,7 @@ public class Intro {
             }
 
             try {
-                Class<?> problemClass = Class.forName("problems.Problem" + problemNumber);
+                Class<?> problemClass = Class.forName("year_2024.Problem" + problemNumber);
                 Object problemObject = problemClass.getDeclaredConstructor().newInstance();
                 Method showSolutionMethod = problemObject.getClass().getMethod("showSolution", Integer.class);
                 showSolutionMethod.invoke(problemObject, problemPart);
