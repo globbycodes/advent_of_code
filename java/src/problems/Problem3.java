@@ -1,6 +1,7 @@
 package problems;
 
 import java.util.*;
+import root.RootProblem;
 
 import utils.TerminalPrint;
 

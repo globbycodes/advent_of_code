@@ -2,6 +2,7 @@ package problems;
 
 import utils.TerminalPrint;
 import java.util.*;
+import root.RootProblem;
 
 public class Problem7 extends RootProblem{
     

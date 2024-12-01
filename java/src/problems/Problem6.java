@@ -1,6 +1,7 @@
 package problems;
 
 import utils.TerminalPrint;
+import root.RootProblem;
 
 public class Problem6 extends RootProblem{
     int problemNumber = 6;

@@ -1,5 +1,4 @@
-package problems;
-
+package root;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,9 +20,9 @@ public class RootProblem {
             String fileName;
             String rootDir = System.getProperty("user.dir");
             if(partNumber == 0){ // Case if input is the same for both parts
-                fileName = rootDir + "/java/src/inputs/problem_" + problemNumber + ".txt";
+                fileName = rootDir + "/java/src/inputs_2024/problem_" + problemNumber + ".txt";
             }else{
-                fileName = rootDir + "/java/src/inputs/problem_" + problemNumber + "_" + partNumber + ".txt";
+                fileName = rootDir + "/java/src/inputs_2024/problem_" + problemNumber + "_" + partNumber + ".txt";
             }
 
 			reader = new BufferedReader(new FileReader(fileName));
