@@ -7,9 +7,6 @@ import root.RootProblem;
 public class Problem1 extends RootProblem{
     
     private int problemNumber = 1;
-    Map<String, Character> digitsMap;
-    String[] digits = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-    int[] wordSizes = {3, 4, 5};
 
     
     protected void solve(Integer partNumber){
