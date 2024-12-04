@@ -1,7 +1,6 @@
 package year_2024;
 
 import utils.TerminalPrint;
-import java.util.*;
 import root.RootProblem;
 
 public class Problem2 extends RootProblem{
