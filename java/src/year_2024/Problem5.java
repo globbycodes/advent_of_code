@@ -44,7 +44,7 @@ public class Problem5 extends RootProblem{
                 if(queueMap.containsKey(numbers[0])){
                     queueMap.get(numbers[0]).add(numbers[1]);
                 }else{
-                    queueMap.put(numbers[0], new HashSet());
+                    queueMap.put(numbers[0], new HashSet<>());
                     queueMap.get(numbers[0]).add(numbers[1]);
                 }
             }else{
@@ -86,7 +86,7 @@ public class Problem5 extends RootProblem{
                 if(queueMap.containsKey(numbers[1])){
                     queueMap.get(numbers[1]).add(numbers[0]);
                 }else{
-                    queueMap.put(numbers[1], new HashSet());
+                    queueMap.put(numbers[1], new HashSet<>());
                     queueMap.get(numbers[1]).add(numbers[0]);
                 }
             }else{
